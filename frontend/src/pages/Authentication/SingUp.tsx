@@ -5,7 +5,7 @@ import { setPageTitle } from '../../store/themeConfigSlice';
 import IconMail from '../../components/Icon/IconMail';
 import IconLockDots from '../../components/Icon/IconLockDots';
 import IconMenuDocumentation from '../../components/Icon/Menu/IconMenuDocumentation';
-
+import { IRegisterFormData } from './types';
 const SingUp = () => {
    const dispatch = useDispatch();
    const [loading, setLoading] = useState(false);
@@ -15,14 +15,7 @@ const SingUp = () => {
       dispatch(setPageTitle('Sign Up'));
    }, []);
 
-   const [formData, setFormData] = useState({
-      companyName: '',
-      userName: '',
-      email: '',
-      password: '',
-      password2: '',
-      secretKey: '',
-   });
+   const [formData, setFormData] = useState<Partial<IRegisterFormData>>();
 
    const submitForm = (event: any) => {
       console.log(formData);
@@ -119,7 +112,7 @@ const SingUp = () => {
                            <div className="relative text-white-dark">
                               <input
                                  id="Password"
-                                 onChange={(e) => setFormData({ ...formData, password2: e.target.value })}
+                                 onChange={(e) => setFormData({ ...formData, passwordConfirm: e.target.value })}
                                  type="password"
                                  placeholder="Confirm Password"
                                  className="form-input ps-10 placeholder:text-white-dark"

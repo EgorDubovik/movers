@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { setPageTitle } from '../../store/themeConfigSlice';
 import IconMail from '../../components/Icon/IconMail';
 import IconLockDots from '../../components/Icon/IconLockDots';
+import { ILoginFormData } from './types';
 
 const LoginBoxed = () => {
    const dispatch = useDispatch();
@@ -14,7 +15,7 @@ const LoginBoxed = () => {
       dispatch(setPageTitle('Login Boxed'));
    }, []);
 
-   const [formData, setFormData] = useState({ email: '', password: '' });
+   const [formData, setFormData] = useState<Partial<ILoginFormData>>();
 
    const submitForm = (event: any) => {
       setLoading(true);
