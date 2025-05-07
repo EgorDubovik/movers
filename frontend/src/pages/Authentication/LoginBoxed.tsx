@@ -5,6 +5,7 @@ import { setPageTitle } from '../../store/themeConfigSlice';
 import IconMail from '../../components/Icon/IconMail';
 import IconLockDots from '../../components/Icon/IconLockDots';
 import { ILoginFormData } from './types';
+import axios from 'axios';
 
 const LoginBoxed = () => {
    const dispatch = useDispatch();
@@ -17,10 +18,14 @@ const LoginBoxed = () => {
 
    const [formData, setFormData] = useState<Partial<ILoginFormData>>();
 
-   const submitForm = (event: any) => {
+   const submitForm = async (event: any) => {
+      event.preventDefault();
       setLoading(true);
       setError(false);
-      event.preventDefault();
+      try {
+         const response = await axios.get(import.meta.env.VITE_API_URL);
+         console.log(response);
+      } catch (err) {}
    };
 
    return (
