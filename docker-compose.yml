@@ -6,11 +6,47 @@ services:
          - ./backend:/app
       ports:
          - "8000:8000"
-
+      environment:
+         - DB_CONNECTION=mysql
+         - DB_HOST=mysql
+         - DB_PORT=3306
+         - DB_DATABASE=${MYSQL_DATABASE}
+         - DB_USERNAME=${MYSQL_USER}
+         - DB_PASSWORD=${MYSQL_PASSWORD}
       networks:
          - main-network
       restart: on-failure
 
+      depends_on:
+         - db
+
+   db:
+      container_name: mysql
+      image: mysql:latest
+      environment:
+         MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+         MYSQL_DATABASE: ${MYSQL_DATABASE}
+         MYSQL_USER: ${MYSQL_USER}
+         MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      volumes:
+         - ./mysql:/var/lib/mysql
+      networks:
+         - main-network
+      ports:
+         - "3306:3306"
+   phpmyadmin:
+      image: phpmyadmin/phpmyadmin
+      container_name: phpmyadmin
+      environment:
+         PMA_HOST: mysql
+         PMA_PORT: 3306
+         MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      networks:
+         - main-network
+      ports:
+         - "8080:80"
+      depends_on:
+         - db
 networks:
    main-network:
       driver: bridge

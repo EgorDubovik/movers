@@ -3,7 +3,7 @@ export interface IRegisterFormData {
    userName: string;
    email: string;
    password: string;
-   passwordConfirm: string;
+   password_confirmation: string;
    secretKey: string;
 }
 

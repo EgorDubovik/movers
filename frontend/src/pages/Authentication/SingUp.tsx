@@ -6,22 +6,43 @@ import IconMail from '../../components/Icon/IconMail';
 import IconLockDots from '../../components/Icon/IconLockDots';
 import IconMenuDocumentation from '../../components/Icon/Menu/IconMenuDocumentation';
 import { IRegisterFormData } from './types';
+import axios, { AxiosError } from 'axios';
+import Cookies from 'universal-cookie';
+
 const SingUp = () => {
    const dispatch = useDispatch();
+   const cookie = new Cookies();
+   const navigate = useNavigate();
+
    const [loading, setLoading] = useState(false);
-   const [errorMesage, setErrorMessage] = useState('Somthing went wrong. Please try again.');
-   const [error, setError] = useState(false);
+   const [errors, setErrors] = useState<{ [key: string]: string[] }>({});
    useEffect(() => {
       dispatch(setPageTitle('Sign Up'));
    }, []);
 
    const [formData, setFormData] = useState<Partial<IRegisterFormData>>();
 
-   const submitForm = (event: any) => {
-      console.log(formData);
-      setLoading(true);
-      setError(false);
+   const submitForm = async (event: any) => {
       event.preventDefault();
+      setLoading(true);
+
+      setErrors({});
+      try {
+         const response = await axios.post(import.meta.env.VITE_API_URL + 'auth/signup', {
+            ...formData,
+         });
+         if (response.data.token) {
+            cookie.set('auth_token', response.data.token);
+            navigate('/');
+         } else {
+            setErrors({ error: ['Somthing went wrong, please try again'] });
+         }
+      } catch (error: any) {
+         if (error.response && error.response.data && error.response.data.errors) {
+            setErrors(error.response.data.errors);
+         }
+      }
+      setLoading(false);
    };
    return (
       <div>
@@ -41,11 +62,15 @@ const SingUp = () => {
                         <h1 className="text-3xl font-extrabold uppercase !leading-snug text-primary md:text-4xl">Sign Up</h1>
                         <p className="text-base font-bold leading-normal text-white-dark">Enter your and company information to register</p>
                      </div>
-                     {error && (
-                        <div className="flex mb-2 items-center p-3.5 rounded text-danger bg-danger-light dark:bg-danger-dark-light">
-                           <span className="ltr:pr-2 rtl:pl-2">{errorMesage}</span>
-                        </div>
+
+                     {Object.keys(errors).map((field: string) =>
+                        errors[field].map((msg: string, index: number) => (
+                           <div key={index} className="flex mb-2 items-center p-3.5 rounded text-danger bg-danger-light dark:bg-danger-dark-light">
+                              {msg}
+                           </div>
+                        ))
                      )}
+
                      <form className="space-y-5 dark:text-white" onSubmit={submitForm}>
                         <div>
                            <label htmlFor="Email">Company name</label>
@@ -96,7 +121,6 @@ const SingUp = () => {
                            <label htmlFor="Password">Password</label>
                            <div className="relative text-white-dark">
                               <input
-                                 id="Password"
                                  onChange={(e) => setFormData({ ...formData, password: e.target.value })}
                                  type="password"
                                  placeholder="Enter Password"
@@ -111,8 +135,7 @@ const SingUp = () => {
                            <label htmlFor="Password">Confirm Password</label>
                            <div className="relative text-white-dark">
                               <input
-                                 id="Password"
-                                 onChange={(e) => setFormData({ ...formData, passwordConfirm: e.target.value })}
+                                 onChange={(e) => setFormData({ ...formData, password_confirmation: e.target.value })}
                                  type="password"
                                  placeholder="Confirm Password"
                                  className="form-input ps-10 placeholder:text-white-dark"
@@ -126,7 +149,6 @@ const SingUp = () => {
                            <label htmlFor="Password">Enter secret key</label>
                            <div className="relative text-white-dark">
                               <input
-                                 id="Password"
                                  onChange={(e) => setFormData({ ...formData, secretKey: e.target.value })}
                                  type="text"
                                  placeholder="Enter secret key"
