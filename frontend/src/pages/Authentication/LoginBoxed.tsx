@@ -6,9 +6,13 @@ import IconMail from '../../components/Icon/IconMail';
 import IconLockDots from '../../components/Icon/IconLockDots';
 import { ILoginFormData } from './types';
 import axios from 'axios';
+import Cookies from 'universal-cookie';
 
 const LoginBoxed = () => {
    const dispatch = useDispatch();
+   const cookie = new Cookies();
+   const navigate = useNavigate();
+
    const [loading, setLoading] = useState(false);
    const [errorMesage, setErrorMessage] = useState('Somthing went wrong. Please try again.');
    const [error, setError] = useState(false);
@@ -24,8 +28,15 @@ const LoginBoxed = () => {
       setError(false);
       try {
          const response = await axios.get(import.meta.env.VITE_API_URL);
-         console.log(response);
-      } catch (err) {}
+         if (response.status == 200 && response.data.token) {
+            cookie.set('auth_token', response.data.token);
+            navigate('/');
+         }
+      } catch (err) {
+         setError(true);
+         console.log(err);
+      }
+      setLoading(false);
    };
 
    return (
