@@ -27,9 +27,13 @@ const LoginBoxed = () => {
       setLoading(true);
       setError(false);
       try {
-         const response = await axios.get(import.meta.env.VITE_API_URL + 'auth/signin');
+         const response = await axios.get(import.meta.env.VITE_API_URL + 'auth/signin', {
+            params: formData,
+         });
          if (response.status == 200 && response.data.token) {
-            cookie.set('auth_token', response.data.token);
+            cookie.set('auth_token', response.data.token, {
+               path: '/',
+            });
             navigate('/');
          } else {
             throw setErrorMessage('Somthing went wrong');

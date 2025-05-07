@@ -38,13 +38,17 @@ class RegisterController extends Controller
 				'name' => $request->userName,
 				'password' => $request->password,
 				'email' => $request->email,
+				'company_id' => $company->id,
+				'is_admin' => true,
 			]);
+			$token = $user->createToken('auth_token')->plainTextToken;
 
 			DB::commit();
 
-			$token = "sdfghjkjhgrwetryujghnfbdgs";
-			return response()->json(['token' => $token]);
-
+			return response()->json([
+				'token' => $token,
+				'user' => $user,
+			]);
 		} catch (ErrorException $errorException) {
 			DB::rollBack();
 			return response()->json(['error' => 'Somthing went wrong'], 402);

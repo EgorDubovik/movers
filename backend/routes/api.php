@@ -10,3 +10,9 @@ Route::get('/', function () {
 
 Route::get('/auth/signin', [LoginController::class, 'login']);
 Route::post('/auth/signup', [RegisterController::class, 'register']);
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/user', function () {
+        return response()->json(auth()->user());
+    });
+});
