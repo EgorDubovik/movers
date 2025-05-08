@@ -12,10 +12,10 @@ return new class extends Migration {
     {
         Schema::create('jobs', function (Blueprint $table) {
             $table->id();
-            $table->string('title');
-            $table->text('description');
             $table->integer('address_from_id');
             $table->integer('address_to_id');
+            $table->string('title');
+            $table->text('description')->nullable();
             $table->integer('volume')->default(0);
             $table->integer('price')->default(0);
             $table->integer('user_id');
