@@ -4,6 +4,7 @@ import AuthPrivetRoute from '../middleware/AuthPrivetRoute';
 import BlankLayout from '../components/Layouts/BlankLayout';
 import LoginBoxed from '../pages/Authentication/LoginBoxed';
 import SingUp from '../pages/Authentication/SingUp';
+import CreateJob from '../pages/Job/Create';
 const Index = lazy(() => import('../pages/Index'));
 
 const routes = [
@@ -17,6 +18,14 @@ const routes = [
             element: (
                <DefaultLayout>
                   <Index />
+               </DefaultLayout>
+            ),
+         },
+         {
+            path: '/job/create',
+            element: (
+               <DefaultLayout>
+                  <CreateJob />
                </DefaultLayout>
             ),
          },
