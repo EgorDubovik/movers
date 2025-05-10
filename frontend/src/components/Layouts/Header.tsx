@@ -1,26 +1,21 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, NavLink, useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { IRootState } from '../../store';
 import { toggleTheme, toggleSidebar } from '../../store/themeConfigSlice';
 import Dropdown from '../Dropdown';
 import IconMenu from '../Icon/IconMenu';
-import IconCalendar from '../Icon/IconCalendar';
-import IconEdit from '../Icon/IconEdit';
-import IconChatNotification from '../Icon/IconChatNotification';
-import IconSearch from '../Icon/IconSearch';
-import IconXCircle from '../Icon/IconXCircle';
 import IconSun from '../Icon/IconSun';
 import IconMoon from '../Icon/IconMoon';
 import IconLaptop from '../Icon/IconLaptop';
-import IconMailDot from '../Icon/IconMailDot';
-import IconArrowLeft from '../Icon/IconArrowLeft';
 import IconInfoCircle from '../Icon/IconInfoCircle';
 import IconBellBing from '../Icon/IconBellBing';
 import IconUser from '../Icon/IconUser';
 import IconMail from '../Icon/IconMail';
 import IconLockDots from '../Icon/IconLockDots';
 import IconLogout from '../Icon/IconLogout';
+import IconSearch from '../Icon/IconSearch';
+import IconMenuApps from '../Icon/Menu/IconMenuApps';
 
 const Header = () => {
    const isRtl = false;
@@ -32,10 +27,10 @@ const Header = () => {
       <header className={`z-40 `}>
          <div className="shadow-sm">
             <div className="relative bg-white flex w-full items-center px-5 py-2.5 dark:bg-black">
-               <div className="horizontal-logo flex lg:hidden justify-between items-center ltr:mr-2 rtl:ml-2">
+               <div className="horizontal-logo flex lg:hidden justify-between items-center mr-2">
                   <Link to="/" className="main-logo flex items-center shrink-0">
-                     <img className="w-8 ltr:-ml-1 rtl:-mr-1 inline" src="/assets/images/logo.svg" alt="logo" />
-                     <span className="text-2xl ltr:ml-1.5 rtl:mr-1.5  font-semibold  align-middle hidden md:inline dark:text-white-light transition-all duration-300">MOVING</span>
+                     <img className="w-8 -ml-1 inline" src="/assets/images/logo.svg" alt="logo" />
+                     <span className="text-2xl ml-1.5 font-semibold align-middle hidden md:inline dark:text-white-light transition-all duration-300">MOVING</span>
                   </Link>
                   <button
                      type="button"
@@ -48,8 +43,16 @@ const Header = () => {
                   </button>
                </div>
 
-               <div className="sm:flex-1 sm:ml-0 ml-auto flex items-center space-x-1.5 lg:space-x-2 rtl:space-x-reverse dark:text-[#d0d2d6]">
-                  <div className="sm:mr-auto "></div>
+               <div className="sm:flex-1 sm:ml-0 ml-auto flex items-center space-x-1.5 lg:space-x-2 dark:text-[#d0d2d6]">
+                  <div className="sm:mr-auto ">
+                     <Link
+                        to="/"
+                        className="flex items-center gap-2 cursor-pointer hover:text-primary bg-white-light/40 dark:bg-dark/40 hover:bg-white-light/90 dark:hover:bg-dark/60 rounded-md py-2 px-4"
+                     >
+                        <IconMenuApps className="w-5 h-5" />
+                        See all jobs
+                     </Link>
+                  </div>
                   <div>
                      {themeConfig.theme === 'light' ? (
                         <button

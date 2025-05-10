@@ -5,16 +5,33 @@ import BlankLayout from '../components/Layouts/BlankLayout';
 import LoginBoxed from '../pages/Authentication/LoginBoxed';
 import SingUp from '../pages/Authentication/SingUp';
 import CreateJob from '../pages/Job/Create';
-const Index = lazy(() => import('../pages/Index'));
+import Dashboard from '../pages/Dashboad/Dashboard';
+const Index = lazy(() => import('../pages/MainPage/Index'));
 
 const routes = [
    // dashboard
    {
-      path: '/',
+      path: '/panel',
       element: <AuthPrivetRoute />,
       children: [
          {
-            path: '/',
+            path: '',
+            element: (
+               <DefaultLayout>
+                  <Dashboard />
+               </DefaultLayout>
+            ),
+         },
+         {
+            path: 'job/create',
+            element: (
+               <DefaultLayout>
+                  <CreateJob />
+               </DefaultLayout>
+            ),
+         },
+         {
+            path: 'job/list',
             element: (
                <DefaultLayout>
                   <Index />
@@ -22,14 +39,23 @@ const routes = [
             ),
          },
          {
-            path: '/job/create',
+            path: 'job/map',
             element: (
                <DefaultLayout>
-                  <CreateJob />
+                  <Index />
                </DefaultLayout>
             ),
          },
       ],
+   },
+
+   {
+      path: '/',
+      element: (
+         <BlankLayout>
+            <Index />
+         </BlankLayout>
+      ),
    },
 
    // Auth routes

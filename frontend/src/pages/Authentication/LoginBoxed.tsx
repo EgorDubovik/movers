@@ -34,7 +34,7 @@ const LoginBoxed = () => {
             cookie.set('auth_token', response.data.token, {
                path: '/',
             });
-            navigate('/');
+            navigate('/panel');
          } else {
             throw setErrorMessage('Somthing went wrong');
          }

@@ -33,7 +33,7 @@ const SingUp = () => {
          });
          if (response.data.token) {
             cookie.set('auth_token', response.data.token);
-            navigate('/');
+            navigate('/panel');
          } else {
             setErrors({ error: ['Somthing went wrong, please try again'] });
          }

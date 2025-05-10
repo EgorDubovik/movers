@@ -7,34 +7,42 @@ import { useEffect } from 'react';
 import IconCaretsDown from '../Icon/IconCaretsDown';
 import IconMenuDashboard from '../Icon/Menu/IconMenuDashboard';
 import IconMenuDocumentation from '../Icon/Menu/IconMenuDocumentation';
+import IconMinus from '../Icon/IconMinus';
+import IconMenuChat from '../Icon/Menu/IconMenuChat';
+import IconMenuMailbox from '../Icon/Menu/IconMenuMailbox';
+import IconMenuTodo from '../Icon/Menu/IconMenuTodo';
+import IconMenuScrumboard from '../Icon/Menu/IconMenuScrumboard';
+import IconMenuNotes from '../Icon/Menu/IconMenuNotes';
 
 const Sidebar = () => {
    const themeConfig = useSelector((state: IRootState) => state.themeConfig);
 
    const dispatch = useDispatch();
 
-   useEffect(() => {
-      const selector = document.querySelector('.sidebar ul a[href="' + window.location.pathname + '"]');
-      if (selector) {
-         selector.classList.add('active');
-         const ul: any = selector.closest('ul.sub-menu');
-         if (ul) {
-            let ele: any = ul.closest('li.menu').querySelectorAll('.nav-link') || [];
-            if (ele.length) {
-               ele = ele[0];
-               setTimeout(() => {
-                  ele.click();
-               });
-            }
-         }
-      }
-   }, []);
+   // useEffect(() => {
+   //    console.log(window.location.pathname);
+   //    const selector = document.querySelector('.sidebar ul a[href="' + window.location.pathname + '"]');
+   //    console.log(selector);
+   //    if (selector) {
+   //       // selector.classList.add('active');
+   //       const ul: any = selector.closest('ul.sub-menu');
+   //       if (ul) {
+   //          let ele: any = ul.closest('li.menu').querySelectorAll('.nav-link') || [];
+   //          if (ele.length) {
+   //             ele = ele[0];
+   //             setTimeout(() => {
+   //                ele.click();
+   //             });
+   //          }
+   //       }
+   //    }
+   // }, []);
 
-   useEffect(() => {
-      if (window.innerWidth < 1024 && themeConfig.sidebar) {
-         dispatch(toggleSidebar());
-      }
-   }, [location]);
+   // useEffect(() => {
+   //    if (window.innerWidth < 1024 && themeConfig.sidebar) {
+   //       dispatch(toggleSidebar());
+   //    }
+   // }, [location]);
 
    return (
       <div>
@@ -57,20 +65,36 @@ const Sidebar = () => {
                <PerfectScrollbar className="h-[calc(100vh-80px)] relative">
                   <ul className="relative font-semibold space-y-0.5 p-4 py-0">
                      <li className="nav-item">
-                        <NavLink to="/" className="group">
+                        <NavLink to="/panel" end className="group">
                            <div className="flex items-center">
                               <IconMenuDashboard className="group-hover:!text-primary shrink-0" />
                               <span className="pl-3 text-black dark:text-[#506690] dark:group-hover:text-white-dark">Dashboard</span>
                            </div>
                         </NavLink>
                      </li>
+                     <h2 className="py-3 px-7 flex items-center uppercase font-extrabold bg-white-light/30 dark:bg-dark dark:bg-opacity-[0.08] -mx-4 mb-1">
+                        <IconMinus className="w-4 h-5 flex-none hidden" />
+                        <span>Job</span>
+                     </h2>
                      <li className="nav-item">
-                        <NavLink to="/job/create" className="group">
-                           <div className="flex items-center">
-                              <IconMenuDocumentation className="group-hover:!text-primary shrink-0" />
-                              <span className="pl-3 text-black dark:text-[#506690] dark:group-hover:text-white-dark">Job Create</span>
-                           </div>
-                        </NavLink>
+                        <ul>
+                           <li className="nav-item">
+                              <NavLink to="/panel/job/create" className="group">
+                                 <div className="flex items-center">
+                                    <IconMenuScrumboard className="group-hover:!text-primary shrink-0" />
+                                    <span className="ltr:pl-3 rtl:pr-3 text-black dark:text-[#506690] dark:group-hover:text-white-dark">Create new job</span>
+                                 </div>
+                              </NavLink>
+                           </li>
+                           <li className="nav-item">
+                              <NavLink to="/panel/job/list" className="group">
+                                 <div className="flex items-center">
+                                    <IconMenuNotes className="group-hover:!text-primary shrink-0" />
+                                    <span className="ltr:pl-3 rtl:pr-3 text-black dark:text-[#506690] dark:group-hover:text-white-dark">My job list</span>
+                                 </div>
+                              </NavLink>
+                           </li>
+                        </ul>
                      </li>
                   </ul>
                </PerfectScrollbar>
