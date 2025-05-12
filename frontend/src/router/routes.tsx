@@ -6,7 +6,7 @@ import LoginBoxed from '../pages/Authentication/LoginBoxed';
 import SingUp from '../pages/Authentication/SingUp';
 import CreateJob from '../pages/Job/Create';
 import Dashboard from '../pages/Dashboad/Dashboard';
-const Index = lazy(() => import('../pages/MainPage/Index'));
+import Index from '../pages/MainPage/Index';
 
 const routes = [
    // dashboard

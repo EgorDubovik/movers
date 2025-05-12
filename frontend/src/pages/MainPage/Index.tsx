@@ -1,7 +1,24 @@
 import Header from './Header';
 import SearchBox from './SearchBox';
+import Map from './Map';
+import JobsList from './JobsList';
+import { useState } from 'react';
+import { IJob } from '../../types';
+import { useEffect } from 'react';
 
 const Index = () => {
+   const [jobs, setJobs] = useState<IJob[]>([]);
+
+   // useEffect(() => {
+   //    const fetchJobs = async () => {
+   //       const response = await fetch(import.meta.env.VITE_API_URL + 'public/jobs');
+   //       const data = await response.json();
+   //       console.log(data);
+   //       setJobs(data);
+   //    };
+   //    fetchJobs();
+   // }, []);
+
    return (
       <div className="w-full h-screen">
          <Header />
@@ -13,6 +30,12 @@ const Index = () => {
 
             {/* Search Box */}
             <SearchBox />
+
+            {/* Map */}
+            <Map />
+
+            {/* Jobs List */}
+            <JobsList jobs={jobs} />
          </div>
       </div>
    );

@@ -4,7 +4,7 @@ const SearchBox = () => {
    const [range3, setRange3] = useState<any>('20');
 
    return (
-      <div className="bg-white rounded-xl shadow-sm mb-8 p-6 dark:bg-[#111316]">
+      <div className="panel">
          <h2 className="text-lg font-semibold text-gray-900 mb-4 dark:text-white-light">Route Optimization</h2>
          <form id="routeForm" className="space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

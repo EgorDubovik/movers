@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\JobCreateRequest;
 use App\Models\Address;
 use App\Models\Job;
+use App\Http\Resources\JobResourceCollection;
 
 class JobController extends Controller
 {
@@ -15,6 +16,18 @@ class JobController extends Controller
 	{
 		return response()->json(Job::all());
 	}
+
+	public function all_public()
+	{
+
+		$jobs = Job::where('status', Job::ACTIVE)
+			->orderBy('created_at', 'desc')
+			->limit(10)
+			->get();
+
+		return response()->json(JobResourceCollection::make($jobs));
+	}
+
 
 	public function store(JobCreateRequest $request)
 	{
