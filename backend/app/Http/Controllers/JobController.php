@@ -10,16 +10,21 @@ use App\Models\Job;
 use App\Http\Resources\JobResourceCollection;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Http\Request;
 class JobController extends Controller
 {
 
-	public function index()
+	public function index(Request $request)
 	{
 		// Gate check
 		$jobs = Job::where('company_id', Auth::user()->company_id)
 			->orderBy('created_at', 'desc')
-			->get();
-		return response()->json(JobResourceCollection::make($jobs)->withFullAddress());
+			->paginate($request->limit ?? 10);
+
+		return response()->json([
+			'jobs' => JobResourceCollection::make($jobs)->withFullAddress(),
+			'total' => $jobs->total()
+		]);
 	}
 
 	public function all_public()

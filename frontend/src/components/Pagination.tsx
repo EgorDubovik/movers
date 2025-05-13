@@ -5,14 +5,32 @@ interface PaginationProps {
    pageSize: number;
    page: number;
    setPage: (page: number) => void;
+   bg?: string;
 }
 
 export const Pagination = (props: PaginationProps) => {
+   const bg = props.bg || 'bg-gray-300 dark:bg-dark';
    const totalRecords = props.totalRecordsCount || 0;
    const pageSize = props.pageSize || 10;
    const page = props.page || 1;
    const setPage = props.setPage;
    const totalPages = Math.ceil(totalRecords / pageSize);
+   console.log('totalPages', totalPages, totalRecords, pageSize);
+
+   const pages: (number | string)[] = [];
+
+   if (totalPages <= 7) {
+      for (let i = 1; i <= totalPages; i++) pages.push(i);
+   } else {
+      if (page <= 3) {
+         pages.push(1, 2, 3, 4, 5, '...', totalPages);
+      } else if (page >= totalPages - 2) {
+         pages.push(1, '...', totalPages - 4, totalPages - 3, totalPages - 2, totalPages - 1, totalPages);
+      } else {
+         pages.push(1, '...', page - 1, page, page + 1, '...', totalPages);
+      }
+   }
+
    return (
       <div className="py-5">
          <div className="flex items-center justify-between" aria-label="Pagination">
@@ -27,25 +45,34 @@ export const Pagination = (props: PaginationProps) => {
                   results
                </p>
             </div>
-            <div className="flex justify-between space-x-2">
-               <button onClick={() => setPage(page - 1)} className={`w-10 h-10 rounded-full flex items-center justify-center bg-gray-300 dark:bg-dark`} disabled={page === 1}>
-                  &lt;
-               </button>
-
-               {Array.from({ length: totalPages }, (_, i) => i + 1).map((item) => (
-                  <button
-                     key={item}
-                     onClick={() => setPage(item)}
-                     className={`w-10 h-10 rounded-full flex items-center justify-center  ${page === item ? 'bg-primary text-white' : 'bg-gray-300 dark:bg-dark'}`}
-                  >
-                     {item}
+            {totalPages >= 1 && (
+               <div className="flex justify-between space-x-2">
+                  <button onClick={() => setPage(page - 1)} className={`w-10 h-10 rounded-full flex items-center justify-center ${bg}  ${page === 1 && 'opacity-50'}`} disabled={page === 1}>
+                     &lt;
                   </button>
-               ))}
 
-               <button onClick={() => setPage(page + 1)} className={`w-10 h-10 rounded-full flex items-center justify-center bg-gray-300 dark:bg-dark`} disabled={page === totalPages}>
-                  &gt;
-               </button>
-            </div>
+                  {pages.map((item: number | string, index: number) => (
+                     <button
+                        key={index}
+                        onClick={() => {
+                           if (item !== '...') setPage(Number(item));
+                        }}
+                        disabled={item === '...'}
+                        className={`w-10 h-10 rounded-full flex items-center justify-center  ${page === item ? 'bg-primary text-white' : bg}`}
+                     >
+                        {item.toString()}
+                     </button>
+                  ))}
+
+                  <button
+                     onClick={() => setPage(page + 1)}
+                     className={`w-10 h-10 rounded-full flex items-center justify-center ${bg}  ${page === totalPages && 'opacity-50'}`}
+                     disabled={page === totalPages}
+                  >
+                     &gt;
+                  </button>
+               </div>
+            )}
          </div>
       </div>
    );

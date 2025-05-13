@@ -14,29 +14,37 @@ import Pagination from '../../components/Pagination';
 
 const List = () => {
    const navigator = useNavigate();
+   const PAGE_SIZES = [2, 10, 20, 50];
    const [jobs, setJobs] = useState<IJob[]>([]);
    const [loadingStatus, setLoadingStatus] = useState<'loading' | 'error' | 'success'>('loading');
    const [viewType, setViewType] = useState<'list' | 'grid'>('list');
    const [page, setPage] = useState(1);
-   const [pageSize, setPageSize] = useState(10);
+   const [pageSize, setPageSize] = useState(PAGE_SIZES[0]);
+   const [total, setTotal] = useState(0);
    const [sortStatus, setSortStatus] = useState({
       columnAccessor: 'name',
       direction: 'asc',
    });
-   const PAGE_SIZES = [10, 20, 50];
+
    useEffect(() => {
+      setLoadingStatus('loading');
       axiosClient
-         .get('/jobs')
+         .get('/jobs', {
+            params: {
+               limit: pageSize,
+               page: page,
+            },
+         })
          .then((response) => {
-            console.log(response.data);
             setLoadingStatus('success');
-            setJobs(response.data);
+            setTotal(response.data.total);
+            setJobs(response.data.jobs || []);
          })
          .catch((error) => {
             setLoadingStatus('error');
             console.log(error);
          });
-   }, []);
+   }, [page, pageSize]);
 
    return (
       <div>
@@ -149,7 +157,7 @@ const List = () => {
                      </div>
                   </div>
                )} */}
-               <Pagination page={page} setPage={setPage} totalRecordsCount={100} pageSize={10} />
+               <Pagination page={page} setPage={setPage} totalRecordsCount={total} pageSize={pageSize} bg="bg-gray-300 dark:bg-zinc-800 text-gray-700 dark:text-gray-200" />
             </>
          )}
       </div>
