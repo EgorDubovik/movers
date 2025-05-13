@@ -7,6 +7,7 @@ import SingUp from '../pages/Authentication/SingUp';
 import CreateJob from '../pages/Job/Create';
 import Dashboard from '../pages/Dashboad/Dashboard';
 import Index from '../pages/MainPage/Index';
+import List from '../pages/Job/List';
 
 const routes = [
    // dashboard
@@ -34,7 +35,7 @@ const routes = [
             path: 'job/list',
             element: (
                <DefaultLayout>
-                  <Index />
+                  <List />
                </DefaultLayout>
             ),
          },

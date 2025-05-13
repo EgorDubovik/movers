@@ -13,5 +13,7 @@ class Address extends Model
         'state',
         'zip_code',
         'description',
+        'latitude',
+        'longitude',
     ];
 }
