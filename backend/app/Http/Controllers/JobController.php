@@ -11,6 +11,8 @@ use App\Http\Resources\JobResourceCollection;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
+
 class JobController extends Controller
 {
 
@@ -132,5 +134,17 @@ class JobController extends Controller
 			], 500);
 
 		}
+	}
+
+	public function destroy($id)
+	{
+		$job = Job::findOrFail($id);
+
+		Gate::authorize('delete-job', $job);
+
+		Job::destroy($id);
+		return response()->json([
+			'message' => 'Job deleted successfully',
+		]);
 	}
 }

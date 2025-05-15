@@ -16,6 +16,7 @@ import IconPencilPaper from '../../components/Icon/IconPencilPaper';
 import IconTrash from '../../components/Icon/IconTrash';
 import IconPencil from '../../components/Icon/IconPencil';
 import IconTrashLines from '../../components/Icon/IconTrashLines';
+import { ButtonCirculeLoaderDanger } from '../../components/ButtonLoaders';
 
 const List = () => {
    const navigator = useNavigate();
@@ -26,10 +27,7 @@ const List = () => {
    const [page, setPage] = useState(1);
    const [pageSize, setPageSize] = useState(PAGE_SIZES[0]);
    const [total, setTotal] = useState(0);
-   const [sortStatus, setSortStatus] = useState({
-      columnAccessor: 'name',
-      direction: 'asc',
-   });
+   const [removeJobId, setRemoveJobId] = useState<number>(0);
 
    useEffect(() => {
       setLoadingStatus('loading');
@@ -50,6 +48,29 @@ const List = () => {
             console.log(error);
          });
    }, [page, pageSize]);
+
+   const removeJob = (id: number) => {
+      if (!window.confirm('Are you sure you want to delete this job?')) return;
+      setRemoveJobId(id);
+      axiosClient.delete(`/jobs/${id}`).then(() => {
+         axiosClient
+            .get('/jobs', {
+               params: {
+                  limit: pageSize,
+                  page: page,
+               },
+            })
+            .then((response) => {
+               setJobs(jobs.filter((job) => job.id !== id));
+            })
+            .catch((error) => {
+               console.log(error);
+            })
+            .finally(() => {
+               setRemoveJobId(0);
+            });
+      });
+   };
 
    const statusColors = {
       Active: 'text-warning',
@@ -117,12 +138,15 @@ const List = () => {
                                     <td>{job.deliveryAddress.full_address}</td>
                                     <td>{job.price}</td>
                                     <td>
-                                       <span className={`${job.status === 'Active' ? 'text-warning' : ''}`}>{job.status}</span>
+                                       <span className={`${statusColors[job.status as keyof typeof statusColors]}`}>{job.status}</span>
                                     </td>
-                                    <td className="flex items-center justify-center space-x-2">
+                                    <td className="flex items-center justify-center space-x-4">
                                        <IconEye className="text-primary cursor-pointer" />
                                        <IconPencil className="text-warning cursor-pointer" />
-                                       <IconTrashLines className="text-danger cursor-pointer" />
+                                       <button type="button" className="text-danger cursor-pointer flex items-center" onClick={() => removeJob(job.id)}>
+                                          {removeJobId === job.id && <ButtonCirculeLoaderDanger />}
+                                          {removeJobId !== job.id && <IconTrashLines />}
+                                       </button>
                                     </td>
                                  </tr>
                               ))}
