@@ -7,6 +7,7 @@ export interface IAddress {
    zip_code?: string;
    latitude?: string;
    longitude?: string;
+   full_address?: string;
    description?: string;
 }
 

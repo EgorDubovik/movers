@@ -9,7 +9,7 @@ Route::get('/', function () {
     return response()->json(['token' => Str::random(50)]);
 });
 
-Route::get('/auth/signin', [LoginController::class, 'login']);
+Route::post('/auth/signin', [LoginController::class, 'login']);
 Route::post('/auth/signup', [RegisterController::class, 'register']);
 
 Route::get('/public/jobs', [JobController::class, 'all_public']);
