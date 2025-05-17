@@ -41,7 +41,7 @@ const CreateJob = () => {
          .post('/jobs', formData)
          .then((response) => {
             console.log(response);
-            navigate('/panel/job/list');
+            // navigate('/panel/job/list');
          })
          .catch((error) => {
             if (error.response && error.response.data.errors) {

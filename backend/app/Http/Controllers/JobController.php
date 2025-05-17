@@ -44,7 +44,9 @@ class JobController extends Controller
 	{
 		$job = Job::findOrFail($id);
 		Gate::authorize('update-job', $job);
+
 		DB::beginTransaction();
+
 		try {
 
 			$job->addressFrom->update([
@@ -170,10 +172,10 @@ class JobController extends Controller
 			$job = Job::create([
 				'address_from_id' => $address_from->id,
 				'address_to_id' => $address_to->id,
-				'title' => $validated['title'],
-				'description' => $validated['description'] ?? null,
-				'volume' => $validated['volume'] ?? 0,
-				'price' => $validated['price'] ?? 0,
+				'title' => $request->title,
+				'description' => $request->description ?? null,
+				'volume' => $request->volume ?? 0,
+				'price' => $request->price ?? 0,
 				'user_id' => Auth::user()->id,
 				'company_id' => Auth::user()->company_id,
 			]);
