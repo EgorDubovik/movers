@@ -9,15 +9,15 @@ import { useEffect } from 'react';
 const Index = () => {
    const [jobs, setJobs] = useState<IJob[]>([]);
 
-   // useEffect(() => {
-   //    const fetchJobs = async () => {
-   //       const response = await fetch(import.meta.env.VITE_API_URL + 'public/jobs');
-   //       const data = await response.json();
-   //       console.log(data);
-   //       setJobs(data);
-   //    };
-   //    fetchJobs();
-   // }, []);
+   useEffect(() => {
+      const fetchJobs = async () => {
+         const response = await fetch(import.meta.env.VITE_API_URL + 'public/jobs');
+         const data = await response.json();
+         console.log(data);
+         setJobs(data);
+      };
+      fetchJobs();
+   }, []);
 
    return (
       <div className="w-full h-screen">
@@ -32,7 +32,7 @@ const Index = () => {
             <SearchBox />
 
             {/* Map */}
-            <Map />
+            <Map jobs={jobs} />
 
             {/* Jobs List */}
             <JobsList jobs={jobs} />

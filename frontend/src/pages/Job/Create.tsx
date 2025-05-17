@@ -2,8 +2,10 @@ import { useState } from 'react';
 import { IJobFormData } from './types';
 import axiosClient from '../../utils/axiosClient';
 import { ButtonLoaderPrimary } from '../../components/ButtonLoaders';
+import { useNavigate } from 'react-router-dom';
 
 const CreateJob = () => {
+   const navigate = useNavigate();
    const [loading, setLoading] = useState(false);
    const [errors, setErrors] = useState<{ [key: string]: string[] }>({});
    const [errorMessage, setErrorMessage] = useState('');
@@ -39,6 +41,7 @@ const CreateJob = () => {
          .post('/jobs', formData)
          .then((response) => {
             console.log(response);
+            navigate('/panel/job/list');
          })
          .catch((error) => {
             if (error.response && error.response.data.errors) {

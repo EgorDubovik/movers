@@ -15,6 +15,12 @@ class JobResource extends JsonResource
         $this->fullAddress = $fullAddress;
     }
 
+    public function withFullAddress()
+    {
+        $this->fullAddress = true;
+        return $this;
+    }
+
     /**
      * Transform the resource into an array.
      *

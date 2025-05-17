@@ -8,6 +8,7 @@ import CreateJob from '../pages/Job/Create';
 import Dashboard from '../pages/Dashboad/Dashboard';
 import Index from '../pages/MainPage/Index';
 import List from '../pages/Job/List';
+import UpdateJob from '../pages/Job/Update';
 
 const routes = [
    // dashboard
@@ -28,6 +29,14 @@ const routes = [
             element: (
                <DefaultLayout>
                   <CreateJob />
+               </DefaultLayout>
+            ),
+         },
+         {
+            path: 'job/update/:id',
+            element: (
+               <DefaultLayout>
+                  <UpdateJob />
                </DefaultLayout>
             ),
          },
@@ -74,6 +83,14 @@ const routes = [
          <BlankLayout>
             <SingUp />
          </BlankLayout>
+      ),
+   },
+   {
+      path: '*',
+      element: (
+         <DefaultLayout>
+            <div>404</div>
+         </DefaultLayout>
       ),
    },
 ];

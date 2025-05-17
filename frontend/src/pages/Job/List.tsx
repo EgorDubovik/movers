@@ -142,7 +142,9 @@ const List = () => {
                                     </td>
                                     <td className="flex items-center justify-center space-x-4">
                                        <IconEye className="text-primary cursor-pointer" />
-                                       <IconPencil className="text-warning cursor-pointer" />
+                                       <Link to={`/panel/job/update/${job.id}`} className="text-warning cursor-pointer">
+                                          <IconPencil />
+                                       </Link>
                                        <button type="button" className="text-danger cursor-pointer flex items-center" onClick={() => removeJob(job.id)}>
                                           {removeJobId === job.id && <ButtonCirculeLoaderDanger />}
                                           {removeJobId !== job.id && <IconTrashLines />}

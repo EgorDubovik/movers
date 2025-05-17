@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\JobCreateRequest;
 use App\Models\Address;
 use App\Models\Job;
+use App\Http\Resources\JobResource;
 use App\Http\Resources\JobResourceCollection;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
@@ -27,6 +28,62 @@ class JobController extends Controller
 			'jobs' => JobResourceCollection::make($jobs)->withFullAddress(),
 			'total' => $jobs->total()
 		]);
+	}
+
+	public function show($id)
+	{
+		$job = Job::findOrFail($id);
+		Gate::authorize('show-job', $job);
+		$job->load('addressFrom', 'addressTo');
+		return response()->json([
+			'job' => $job,
+		]);
+	}
+
+	public function update(JobCreateRequest $request, $id)
+	{
+		$job = Job::findOrFail($id);
+		Gate::authorize('update-job', $job);
+		DB::beginTransaction();
+		try {
+
+			$job->addressFrom->update([
+				'line_1' => $request->address_from['line_1'],
+				'line_2' => $request->address_from['line_2'],
+				'city' => $request->address_from['city'],
+				'state' => $request->address_from['state'],
+				'zip_code' => $request->address_from['zip_code'],
+				'description' => $request->address_from['description'] ?? null,
+			]);
+
+			$job->addressTo->update([
+				'line_1' => $request->address_to['line_1'],
+				'line_2' => $request->address_to['line_2'],
+				'city' => $request->address_to['city'],
+				'state' => $request->address_to['state'],
+				'zip_code' => $request->address_to['zip_code'],
+				'description' => $request->address_to['description'] ?? null,
+			]);
+
+			$job->update([
+				'title' => $request->title,
+				'description' => $request->description ?? null,
+				'volume' => $request->volume ?? 0,
+				'price' => $request->price ?? 0,
+			]);
+
+			DB::commit();
+			return response()->json([
+				'message' => 'Job updated successfully',
+			]);
+		} catch (\Throwable $th) {
+			DB::rollBack();
+			Log::error($th->getMessage());
+			return response()->json([
+				'message' => 'Job update failed',
+				'error' => $th->getMessage(),
+			], 500);
+		}
 	}
 
 	public function all_public()
@@ -141,6 +198,9 @@ class JobController extends Controller
 		$job = Job::findOrFail($id);
 
 		Gate::authorize('delete-job', $job);
+
+		Address::destroy($job->address_from_id);
+		Address::destroy($job->address_to_id);
 
 		Job::destroy($id);
 		return response()->json([
