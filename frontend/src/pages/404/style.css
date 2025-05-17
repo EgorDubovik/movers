@@ -1,0 +1,103 @@
+@keyframes float {
+   0%,
+   100% {
+      transform: translateY(0);
+   }
+   50% {
+      transform: translateY(-20px);
+   }
+}
+
+@keyframes shake {
+   0%,
+   100% {
+      transform: translateX(0);
+   }
+   10%,
+   30%,
+   50%,
+   70%,
+   90% {
+      transform: translateX(-5px);
+   }
+   20%,
+   40%,
+   60%,
+   80% {
+      transform: translateX(5px);
+   }
+}
+
+@keyframes pulse {
+   0%,
+   100% {
+      transform: scale(1);
+   }
+   50% {
+      transform: scale(1.05);
+   }
+}
+
+@keyframes rotate {
+   0% {
+      transform: rotate(0deg);
+   }
+   100% {
+      transform: rotate(360deg);
+   }
+}
+
+.animate-float {
+   animation: float 3s ease-in-out infinite;
+}
+
+.animate-shake {
+   animation: shake 0.5s ease-in-out;
+}
+
+.animate-pulse {
+   animation: pulse 2s ease-in-out infinite;
+}
+
+.animate-rotate {
+   animation: rotate 20s linear infinite;
+}
+
+.gradient-text {
+   background: linear-gradient(90deg, #3b82f6, #8b5cf6, #ec4899);
+   -webkit-background-clip: text;
+   background-clip: text;
+   color: transparent;
+}
+
+.glass-effect {
+   background: rgba(255, 255, 255, 0.05);
+   backdrop-filter: blur(10px);
+   -webkit-backdrop-filter: blur(10px);
+   border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.particle {
+   position: absolute;
+   border-radius: 50%;
+   background: white;
+   opacity: 0.6;
+   pointer-events: none;
+}
+
+.astronaut-helmet {
+   position: relative;
+}
+
+.astronaut-helmet::before {
+   content: '';
+   position: absolute;
+   top: 15%;
+   left: 50%;
+   transform: translateX(-50%);
+   width: 60%;
+   height: 60%;
+   border-radius: 50%;
+   background: rgba(255, 255, 255, 0.1);
+   filter: blur(10px);
+}

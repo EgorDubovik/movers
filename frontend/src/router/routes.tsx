@@ -9,6 +9,7 @@ import Dashboard from '../pages/Dashboad/Dashboard';
 import Index from '../pages/MainPage/Index';
 import List from '../pages/Job/List';
 import UpdateJob from '../pages/Job/Update';
+import Page404 from '../pages/404/Page404';
 
 const routes = [
    // dashboard
@@ -88,9 +89,9 @@ const routes = [
    {
       path: '*',
       element: (
-         <DefaultLayout>
-            <div>404</div>
-         </DefaultLayout>
+         <BlankLayout>
+            <Page404 />
+         </BlankLayout>
       ),
    },
 ];
