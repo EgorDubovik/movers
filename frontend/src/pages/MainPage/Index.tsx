@@ -8,25 +8,29 @@ import { useEffect } from 'react';
 import { PageMainLoader } from '../../components/PageLoadStatus';
 import { PageLoadError } from '../../components/PageLoadStatus';
 import './style.css';
+import { useApiRequest } from '../../utils/hooks/useApiRequest';
 
 const Index = () => {
    const [jobs, setJobs] = useState<IJob[]>([]);
-   const [loadingStatus, setLoadingStatus] = useState<'loading' | 'success' | 'error'>('loading');
+   const { loadingStatus, data, error, sendRequest } = useApiRequest({
+      url: '/public/jobs',
+      method: 'get',
+   });
+
    useEffect(() => {
-      const fetchJobs = async () => {
-         setLoadingStatus('loading');
-         const response = await fetch(import.meta.env.VITE_API_URL + 'public/jobs');
-         const data = await response.json();
-         console.log(data);
-         setJobs(data);
-         setLoadingStatus('success');
-      };
-      fetchJobs();
+      sendRequest();
    }, []);
+
+   useEffect(() => {
+      if (data) {
+         setJobs(data.jobs || []);
+      }
+   }, [data]);
 
    return (
       <>
          {loadingStatus === 'loading' && <PageMainLoader />}
+         {loadingStatus === 'error' && <PageLoadError />}
          {loadingStatus === 'success' && (
             <div className="w-full h-screen">
                <Header />
@@ -47,7 +51,6 @@ const Index = () => {
                </div>
             </div>
          )}
-         {loadingStatus === 'error' && <PageLoadError />}
       </>
    );
 };

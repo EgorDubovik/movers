@@ -90,13 +90,25 @@ class JobController extends Controller
 
 	public function all_public()
 	{
-
 		$jobs = Job::where('status', Job::ACTIVE)
 			->orderBy('created_at', 'desc')
 			->limit(10)
 			->get();
 
-		return response()->json(JobResourceCollection::make($jobs));
+		$response = [
+			'jobs' => JobResourceCollection::make($jobs)->withFullAddress(),
+		];
+		$user = Auth::guard('sanctum')->user();
+		if ($user) {
+			$response['user'] = [
+				'id' => $user->id,
+				'name' => $user->name,
+				'email' => $user->email,
+				'company_id' => $user->company_id,
+			];
+		}
+
+		return response()->json($response);
 	}
 
 

@@ -11,7 +11,7 @@ const JobsList = ({ jobs }: { jobs: IJob[] }) => {
       <div className="panel p-0">
          <div className="px-6 border-b py-4 border-gray-100 dark:border-gray-800 flex justify-between items-center">
             <h2 className="text-lg font-semibold text-gray-900 dark:text-white-light">
-               Available Jobs <span className="text-sm text-gray-500 dark:text-[#d0d2d6]">({jobs.length})</span>
+               Available Jobs <span className="text-sm text-gray-500 dark:text-[#d0d2d6]">({jobs?.length || 0})</span>
             </h2>
             <div className="flex items-center justify-between space-x-2">
                <span className="text-sm text-gray-500 w-20 dark:text-[#d0d2d6]">Sort by:</span>
@@ -25,7 +25,7 @@ const JobsList = ({ jobs }: { jobs: IJob[] }) => {
          </div>
          <div id="jobList" className="overflow-y-scroll" style={{ maxHeight: '800px', scrollbarWidth: 'thin', scrollbarColor: 'rgba(67, 97, 238, 0.2) transparent' }}>
             {/* Job Card 1 */}
-            {jobs.map((job: IJob, index: number) => (
+            {jobs?.map((job: IJob, index: number) => (
                <div key={job.id} className="job-card border-b border-b-gray-100 dark:border-b-gray-800 p-6 border-l-4 border-l-transparent hover:border-l-indigo-500">
                   <div className="flex justify-between items-start">
                      <div>

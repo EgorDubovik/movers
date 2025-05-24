@@ -35,14 +35,14 @@ const Map = ({ jobs }: { jobs: IJob[] }) => {
       markersRef.current = [];
 
       // Добавить новые маркеры
-      jobs.forEach((job) => {
+      jobs?.forEach((job) => {
          const marker = L.marker([job.pickupLocation.latitude!, job.pickupLocation.longitude!]);
          marker.addTo(mapRef.current!);
          markersRef.current.push(marker);
       });
 
       // Подогнать карту под маркеры (опционально)
-      if (jobs.length) {
+      if (jobs && jobs.length) {
          const bounds = L.latLngBounds(jobs.map((job) => [job.pickupLocation.latitude!, job.pickupLocation.longitude!]));
          mapRef.current.fitBounds(bounds, { padding: [50, 50], maxZoom: 6 });
       }

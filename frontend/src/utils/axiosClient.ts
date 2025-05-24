@@ -1,5 +1,7 @@
 import axios from 'axios';
 import Cookies from 'universal-cookie';
+import { useDispatch } from 'react-redux';
+import { setUser } from '../store/themeConfigSlice';
 
 const cookies = new Cookies();
 
@@ -18,6 +20,10 @@ axiosClient.interceptors.request.use((config) => {
 
 axiosClient.interceptors.response.use(
    (response) => {
+      // const dispatch = useDispatch();
+      // if (response.data.user) {
+      //    dispatch(setUser(response.data.user));
+      // }
       return response;
    },
    (error) => {

@@ -14,6 +14,7 @@ import IconX from '../../components/Icon/IconX';
 
 const Header = () => {
    const themeConfig = useSelector((state: IRootState) => state.themeConfig);
+   const user = useSelector((state: IRootState) => state.themeConfig.user);
    const dispatch = useDispatch();
    const [showMenu, setShowMenu] = useState(false);
    const menuRef = useRef<HTMLDivElement>(null);
@@ -43,66 +44,77 @@ const Header = () => {
                      </div>
                   </div>
                   <div className="ml-6 flex items-center space-x-4">
-                     <div>
-                        {themeConfig.theme === 'light' ? (
-                           <button
-                              className={`${themeConfig.theme === 'light' && 'flex items-center p-2 hover:text-primary'}`}
-                              onClick={() => {
-                                 dispatch(toggleTheme('dark'));
-                              }}
-                           >
-                              <IconSun />
-                           </button>
-                        ) : (
-                           ''
-                        )}
-                        {themeConfig.theme === 'dark' && (
-                           <button
-                              className={`${themeConfig.theme === 'dark' && 'flex items-center p-2  hover:text-primary'}`}
-                              onClick={() => {
-                                 dispatch(toggleTheme('system'));
-                              }}
-                           >
-                              <IconMoon />
-                           </button>
-                        )}
-                        {themeConfig.theme === 'system' && (
-                           <button
-                              className={`${themeConfig.theme === 'system' && 'flex items-center p-2  hover:text-primary'}`}
-                              onClick={() => {
-                                 dispatch(toggleTheme('light'));
-                              }}
-                           >
-                              <IconLaptop />
-                           </button>
-                        )}
-                     </div>
-                     <button className="p-1  hover:text-primary focus:outline-none">
-                        <IconBell className="w-5 h-5" />
-                     </button>
-                     <div className="ml-3 relative" ref={menuRef}>
-                        <div className="hover:bg-gray-100 hover:dark:bg-gray-800 p-2 px-4 rounded cursor-pointer" onClick={() => setShowMenu((prev) => !prev)}>
-                           <span className="text-sm font-medium text-gray-700 dark:text-[#d0d2d6]">John Smith</span>
-                        </div>
-                        {showMenu && (
-                           <div className="absolute z-52 top-10 right-0 w-48 bg-white dark:bg-gray-800 rounded-md shadow-lg">
-                              <div className="py-2">
-                                 <Link to={'/panel'} className="flex items-center justify-start gap-4 p-2 px-4 hover:text-primary hover:bg-gray-100 hover:dark:bg-gray-900">
-                                    <IconLaptop className="w-5 h-5" />
-                                    Panel
-                                 </Link>
-                                 <Link to={'/panel'} className="flex items-center justify-start gap-4 p-2 px-4 hover:text-primary hover:bg-gray-100 hover:dark:bg-gray-900">
-                                    <IconSettings className="w-5 h-5" />
-                                    Settings
-                                 </Link>
-                                 <Link to={'/panel'} className="flex items-center justify-start gap-4 p-2 px-4 hover:text-primary hover:bg-gray-100 hover:dark:bg-gray-900">
-                                    <IconLogout className="w-5 h-5" />
-                                    Logout
-                                 </Link>
-                              </div>
+                     {user.id ? (
+                        <>
+                           <div>
+                              {themeConfig.theme === 'light' ? (
+                                 <button
+                                    className={`${themeConfig.theme === 'light' && 'flex items-center p-2 hover:text-primary'}`}
+                                    onClick={() => {
+                                       dispatch(toggleTheme('dark'));
+                                    }}
+                                 >
+                                    <IconSun />
+                                 </button>
+                              ) : (
+                                 ''
+                              )}
+                              {themeConfig.theme === 'dark' && (
+                                 <button
+                                    className={`${themeConfig.theme === 'dark' && 'flex items-center p-2  hover:text-primary'}`}
+                                    onClick={() => {
+                                       dispatch(toggleTheme('system'));
+                                    }}
+                                 >
+                                    <IconMoon />
+                                 </button>
+                              )}
+                              {themeConfig.theme === 'system' && (
+                                 <button
+                                    className={`${themeConfig.theme === 'system' && 'flex items-center p-2  hover:text-primary'}`}
+                                    onClick={() => {
+                                       dispatch(toggleTheme('light'));
+                                    }}
+                                 >
+                                    <IconLaptop />
+                                 </button>
+                              )}
                            </div>
-                        )}
-                     </div>
+                           <button className="p-1  hover:text-primary focus:outline-none">
+                              <IconBell className="w-5 h-5" />
+                           </button>
+
+                           <div className="ml-3 relative" ref={menuRef}>
+                              <div className="hover:bg-gray-100 hover:dark:bg-gray-800 p-2 px-4 rounded cursor-pointer" onClick={() => setShowMenu((prev) => !prev)}>
+                                 <span className="text-sm font-medium text-gray-700 dark:text-[#d0d2d6]">{user.name}</span>
+                              </div>
+                              {showMenu && (
+                                 <div className="absolute z-52 top-10 right-0 w-48 bg-white dark:bg-gray-800 rounded-md shadow-lg">
+                                    <div className="py-2">
+                                       <Link to={'/panel'} className="flex items-center justify-start gap-4 p-2 px-4 hover:text-primary hover:bg-gray-100 hover:dark:bg-gray-900">
+                                          <IconLaptop className="w-5 h-5" />
+                                          Panel
+                                       </Link>
+                                       <Link to={'/panel'} className="flex items-center justify-start gap-4 p-2 px-4 hover:text-primary hover:bg-gray-100 hover:dark:bg-gray-900">
+                                          <IconSettings className="w-5 h-5" />
+                                          Settings
+                                       </Link>
+                                       <Link to={'/panel'} className="flex items-center justify-start gap-4 p-2 px-4 hover:text-primary hover:bg-gray-100 hover:dark:bg-gray-900">
+                                          <IconLogout className="w-5 h-5" />
+                                          Logout
+                                       </Link>
+                                    </div>
+                                 </div>
+                              )}
+                           </div>
+                        </>
+                     ) : (
+                        <Link to={'/auth/signin'} className="ml-3 relative">
+                           <div className="hover:bg-gray-100 hover:dark:bg-gray-800 p-2 px-4 rounded cursor-pointer">
+                              <span className="text-sm font-medium text-gray-700 dark:text-[#d0d2d6]">Sign In</span>
+                           </div>
+                        </Link>
+                     )}
                   </div>
                </div>
             </div>

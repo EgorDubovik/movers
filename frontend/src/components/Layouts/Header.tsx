@@ -14,15 +14,28 @@ import IconUser from '../Icon/IconUser';
 import IconMail from '../Icon/IconMail';
 import IconLockDots from '../Icon/IconLockDots';
 import IconLogout from '../Icon/IconLogout';
-import IconSearch from '../Icon/IconSearch';
 import IconMenuApps from '../Icon/Menu/IconMenuApps';
+import { getNameFirstTwoLetter } from '../../utils/helpers';
+import axiosClient from '../../utils/axiosClient';
+import { setUser } from '../../store/themeConfigSlice';
 
 const Header = () => {
    const isRtl = false;
 
    const themeConfig = useSelector((state: IRootState) => state.themeConfig);
+   const user = useSelector((state: IRootState) => state.themeConfig.user);
    const dispatch = useDispatch();
    const [notifications, setNotifications] = useState([]);
+   useEffect(() => {
+      axiosClient
+         .get('/user')
+         .then((response) => {
+            dispatch(setUser(response.data.user));
+         })
+         .catch((error) => {
+            console.log(error);
+         });
+   }, []);
    return (
       <header className={`z-40 `}>
          <div className="shadow-sm">
@@ -173,19 +186,19 @@ const Header = () => {
                         offset={[0, 8]}
                         placement={`${isRtl ? 'bottom-start' : 'bottom-end'}`}
                         btnClassName="relative group block"
-                        button={<img className="w-9 h-9 rounded-full object-cover saturate-50 group-hover:saturate-100" src="/assets/images/user-profile.jpeg" alt="userProfile" />}
+                        button={<div className="w-9 h-9 rounded-full flex items-center justify-center bg-primary text-white">{getNameFirstTwoLetter(user.name || '')}</div>}
                      >
                         <ul className="text-dark dark:text-white-dark !py-0 w-[230px] font-semibold dark:text-white-light/90">
                            <li>
                               <div className="flex items-center px-4 py-4">
-                                 <img className="rounded-md w-10 h-10 object-cover" src="/assets/images/user-profile.jpeg" alt="userProfile" />
-                                 <div className="ltr:pl-4 rtl:pr-4 truncate">
+                                 <div className="w-9 h-9 rounded-full flex items-center justify-center bg-primary text-white">{getNameFirstTwoLetter(user.name || '')}</div>
+                                 <div className="pl-4 truncate">
                                     <h4 className="text-base">
-                                       John Doe
+                                       {user.name}
                                        <span className="text-xs bg-success-light rounded text-success px-1 ltr:ml-2 rtl:ml-2">Pro</span>
                                     </h4>
                                     <button type="button" className="text-black/60 hover:text-primary dark:text-dark-light/60 dark:hover:text-white">
-                                       johndoe@gmail.com
+                                       {user.email}
                                     </button>
                                  </div>
                               </div>

@@ -2,48 +2,59 @@ import { createSlice } from '@reduxjs/toolkit';
 import themeConfig from '../theme.config';
 
 const initialState = {
-    theme: localStorage.getItem('theme') || themeConfig.theme,
-    isDarkMode: false,
-    sidebar: localStorage.getItem('sidebar') || false,
+   theme: localStorage.getItem('theme') || themeConfig.theme,
+   isDarkMode: false,
+   sidebar: localStorage.getItem('sidebar') || false,
+   user: {
+      id: null,
+      name: null,
+      email: null,
+      role: null,
+      company_id: null,
+   },
 };
 
 const themeConfigSlice = createSlice({
-    name: 'auth',
-    initialState: initialState,
-    reducers: {
-        toggleTheme(state, { payload }) {
-            payload = payload || state.theme; // light | dark | system
-            localStorage.setItem('theme', payload);
-            state.theme = payload;
-            if (payload === 'light') {
-                state.isDarkMode = false;
-            } else if (payload === 'dark') {
-                state.isDarkMode = true;
-            } else if (payload === 'system') {
-                if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-                    state.isDarkMode = true;
-                } else {
-                    state.isDarkMode = false;
-                }
-            }
-
-            if (state.isDarkMode) {
-                document.querySelector('body')?.classList.add('dark');
+   name: 'auth',
+   initialState: initialState,
+   reducers: {
+      toggleTheme(state, { payload }) {
+         payload = payload || state.theme; // light | dark | system
+         localStorage.setItem('theme', payload);
+         state.theme = payload;
+         if (payload === 'light') {
+            state.isDarkMode = false;
+         } else if (payload === 'dark') {
+            state.isDarkMode = true;
+         } else if (payload === 'system') {
+            if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+               state.isDarkMode = true;
             } else {
-                document.querySelector('body')?.classList.remove('dark');
+               state.isDarkMode = false;
             }
-        },
+         }
 
-        toggleSidebar(state) {
-            state.sidebar = !state.sidebar;
-        },
+         if (state.isDarkMode) {
+            document.querySelector('body')?.classList.add('dark');
+         } else {
+            document.querySelector('body')?.classList.remove('dark');
+         }
+      },
 
-        setPageTitle(state, { payload }) {
-            document.title = `${payload} | Moving start`;
-        },
-    },
+      toggleSidebar(state) {
+         state.sidebar = !state.sidebar;
+      },
+
+      setPageTitle(state, { payload }) {
+         document.title = `${payload} | Moving start`;
+      },
+
+      setUser(state, { payload }) {
+         state.user = { ...state.user, ...payload };
+      },
+   },
 });
 
-export const { toggleTheme, toggleSidebar, setPageTitle } = themeConfigSlice.actions;
+export const { toggleTheme, toggleSidebar, setPageTitle, setUser } = themeConfigSlice.actions;
 
 export default themeConfigSlice.reducer;
