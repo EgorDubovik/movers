@@ -10,6 +10,7 @@ import Index from '../pages/MainPage/Index';
 import List from '../pages/Job/List';
 import UpdateJob from '../pages/Job/Update';
 import Page404 from '../pages/404/Page404';
+import LogOut from '../pages/Authentication/LogOut';
 
 const routes = [
    // dashboard
@@ -83,6 +84,14 @@ const routes = [
       element: (
          <BlankLayout>
             <SingUp />
+         </BlankLayout>
+      ),
+   },
+   {
+      path: '/auth/logout',
+      element: (
+         <BlankLayout>
+            <LogOut />
          </BlankLayout>
       ),
    },

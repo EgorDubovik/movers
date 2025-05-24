@@ -99,7 +99,7 @@ const Header = () => {
                                           <IconSettings className="w-5 h-5" />
                                           Settings
                                        </Link>
-                                       <Link to={'/panel'} className="flex items-center justify-start gap-4 p-2 px-4 hover:text-primary hover:bg-gray-100 hover:dark:bg-gray-900">
+                                       <Link to={'/auth/logout'} className="flex items-center justify-start gap-4 p-2 px-4 hover:text-primary hover:bg-gray-100 hover:dark:bg-gray-900">
                                           <IconLogout className="w-5 h-5" />
                                           Logout
                                        </Link>
