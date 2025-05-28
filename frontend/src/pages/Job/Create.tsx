@@ -3,6 +3,7 @@ import { IJobFormData } from './types';
 import axiosClient from '../../utils/axiosClient';
 import { ButtonLoaderPrimary } from '../../components/ButtonLoaders';
 import { useNavigate } from 'react-router-dom';
+import { alertSuccess } from '../../utils/alerts';
 
 const CreateJob = () => {
    const navigate = useNavigate();
@@ -40,8 +41,8 @@ const CreateJob = () => {
       axiosClient
          .post('/jobs', formData)
          .then((response) => {
-            console.log(response);
-            // navigate('/panel/job/list');
+            alertSuccess('Job created successfully');
+            navigate('/panel/job/list');
          })
          .catch((error) => {
             if (error.response && error.response.data.errors) {

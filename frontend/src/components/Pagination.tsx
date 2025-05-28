@@ -15,7 +15,6 @@ export const Pagination = (props: PaginationProps) => {
    const page = props.page || 1;
    const setPage = props.setPage;
    const totalPages = Math.ceil(totalRecords / pageSize);
-   console.log('totalPages', totalPages, totalRecords, pageSize);
 
    const pages: (number | string)[] = [];
 

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Http\Resources\MyClaimebJobResource;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\JobCreateRequest;
@@ -246,15 +247,36 @@ class JobController extends Controller
 		]);
 	}
 
-	public function my_claimed_job()
+	public function my_claimed_job(Request $request)
 	{
-		$cleamedJobs = JobClaim::where('claimer_user_id', Auth::user()->id)->get();
+		$cleamedJobs = JobClaim::where('claimer_user_id', Auth::user()->id)
+			->with('job')
+			->paginate($request->limit ?? 10);
 
-		$jobs = Job::whereIn('id', $cleamedJobs->pluck('job_id'))->get();
 		return response()->json([
 			'message' => 'My claimed jobs',
-			'jobs' => JobResourceCollection::make($jobs),
+			'jobs' => MyClaimebJobResource::collection($cleamedJobs),
+			'total' => $cleamedJobs->total(),
 		]);
 
+	}
+
+	public function remove_claimed_job($id)
+	{
+		$jobClaim = JobClaim::where('job_id', $id)->first();
+		if (!$jobClaim) {
+			return response()->json([
+				'message' => 'Job claim not found',
+			], 404);
+		}
+		if ($jobClaim->claimer_user_id !== Auth::user()->id) {
+			return response()->json([
+				'message' => 'You are not authorized to remove this claim',
+			], 403);
+		}
+		$jobClaim->delete();
+		return response()->json([
+			'message' => 'Job claim removed successfully',
+		]);
 	}
 }
