@@ -12,6 +12,7 @@ import { useApiRequest } from '../../utils/hooks/useApiRequest';
 
 const Index = () => {
    const [jobs, setJobs] = useState<IJob[]>([]);
+   const [cleamedJobs, setCleamedJobs] = useState<any[]>([]);
    const { loadingStatus, data, error, sendRequest } = useApiRequest({
       url: '/public/jobs',
       method: 'get',
@@ -24,6 +25,9 @@ const Index = () => {
    useEffect(() => {
       if (data) {
          setJobs(data.jobs || []);
+         if (data.cleamedJobs) {
+            setCleamedJobs(data.cleamedJobs);
+         }
       }
    }, [data]);
 
@@ -47,7 +51,7 @@ const Index = () => {
                   <Map jobs={jobs} />
 
                   {/* Jobs List */}
-                  <JobsList jobs={jobs} />
+                  <JobsList jobs={jobs} cleamedJobs={cleamedJobs} setCleamedJobs={setCleamedJobs} />
                </div>
             </div>
          )}

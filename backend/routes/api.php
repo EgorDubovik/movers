@@ -3,7 +3,7 @@
 use App\Http\Controllers\Api\Auth\LoginController;
 use App\Http\Controllers\Api\Auth\RegisterController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\JobController;
+use App\Http\Controllers\Api\JobController;
 
 Route::get('/', function () {
 	return response()->json(['token' => Str::random(50)]);
@@ -30,4 +30,5 @@ Route::middleware('auth:sanctum')->group(function () {
 	Route::post('/jobs', [JobController::class, 'store']);
 	Route::put('/job/{id}', [JobController::class, 'update']);
 	Route::delete('/jobs/{id}', [JobController::class, 'destroy']);
+	Route::post('/jobs/{id}/claim', [JobController::class, 'claim']);
 });

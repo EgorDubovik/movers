@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -13,6 +13,8 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
+use App\Models\JobClaim;
+use App\Http\Controllers\Controller;
 
 class JobController extends Controller
 {
@@ -99,13 +101,17 @@ class JobController extends Controller
 			'jobs' => JobResourceCollection::make($jobs)->withFullAddress(),
 		];
 		$user = Auth::guard('sanctum')->user();
+
 		if ($user) {
+
 			$response['user'] = [
 				'id' => $user->id,
 				'name' => $user->name,
 				'email' => $user->email,
 				'company_id' => $user->company_id,
 			];
+
+			$response['cleamedJobs'] = JobClaim::where('claimer_user_id', $user->id)->get();
 		}
 
 		return response()->json($response);
@@ -219,6 +225,24 @@ class JobController extends Controller
 		Job::destroy($id);
 		return response()->json([
 			'message' => 'Job deleted successfully',
+		]);
+	}
+
+	public function claim($id)
+	{
+		$job = Job::findOrFail($id);
+
+		JobClaim::createOrFirst([
+			'job_id' => $job->id,
+			'claimer_user_id' => Auth::user()->id,
+		]);
+
+		// returning claimed job for user to view claim job status
+		$cleamedJobs = JobClaim::where('claimer_user_id', Auth::user()->id)->get();
+
+		return response()->json([
+			'message' => 'Job claimed successfully',
+			'cleamedJobs' => $cleamedJobs,
 		]);
 	}
 }
