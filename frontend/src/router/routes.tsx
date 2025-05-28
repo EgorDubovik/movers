@@ -11,6 +11,7 @@ import List from '../pages/Job/List';
 import UpdateJob from '../pages/Job/Update';
 import Page404 from '../pages/404/Page404';
 import LogOut from '../pages/Authentication/LogOut';
+import MyClaimedJob from '../pages/Job/MyClaimedJob';
 
 const routes = [
    // dashboard
@@ -55,6 +56,14 @@ const routes = [
             element: (
                <DefaultLayout>
                   <Index />
+               </DefaultLayout>
+            ),
+         },
+         {
+            path: 'job/my-claimed-job',
+            element: (
+               <DefaultLayout>
+                  <MyClaimedJob />
                </DefaultLayout>
             ),
          },

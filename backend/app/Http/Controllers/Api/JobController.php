@@ -245,4 +245,16 @@ class JobController extends Controller
 			'cleamedJobs' => $cleamedJobs,
 		]);
 	}
+
+	public function my_claimed_job()
+	{
+		$cleamedJobs = JobClaim::where('claimer_user_id', Auth::user()->id)->get();
+
+		$jobs = Job::whereIn('id', $cleamedJobs->pluck('job_id'))->get();
+		return response()->json([
+			'message' => 'My claimed jobs',
+			'jobs' => JobResourceCollection::make($jobs),
+		]);
+
+	}
 }
