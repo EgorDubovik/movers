@@ -11,6 +11,7 @@ import IconChecks from '../../components/Icon/IconChecks';
 import { ButtonLoaderPrimary } from '../../components/ButtonLoaders';
 import axiosClient from '../../utils/axiosClient';
 import { alertSuccess, alertError } from '../../utils/alerts';
+import { Link } from 'react-router-dom';
 
 const JobsList = ({
    jobs,
@@ -137,7 +138,7 @@ const JobsList = ({
                                  You claimed this job, status: <span className={`ml-2 ${claimedStatusColors[cleamedJob.claim_status]}`}>{claimedStatus[cleamedJob.claim_status]}</span>
                               </p>
                            </div>
-                        ) : (
+                        ) : user.id ? (
                            <div className="mt-6 flex justify-end space-x-3">
                               <button className="text-indigo-600 hover:text-indigo-800 text-sm font-medium flex items-center space-x-1">
                                  <span>Details</span>
@@ -146,6 +147,15 @@ const JobsList = ({
                                  {claimJobId === job.id ? <ButtonLoaderPrimary /> : <IconChecks />}
                                  <span>Claim Job</span>
                               </button>
+                           </div>
+                        ) : (
+                           <div className="mt-6 flex justify-end space-x-3">
+                              <p className="text-indigo-600 hover:text-indigo-800 text-sm font-medium flex items-center space-x-1">
+                                 <Link className="text-primary hover:text-primary/80 underline mr-2" to="/login">
+                                    Login
+                                 </Link>{' '}
+                                 to claim this job
+                              </p>
                            </div>
                         )
                      ) : (
